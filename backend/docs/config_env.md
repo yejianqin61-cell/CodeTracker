@@ -191,3 +191,30 @@ module.exports = { port, dbPath, nodeEnv, corsOrigin }
 ```
 
 最后把这些环境变量暴露给整个项目使用
+
+---
+
+## 常见疑问
+
+### 1）是不是“服务器开始监听端口后”，端口号就会写到 `process.env.PORT`，并被 `PORT_RAW` 读取？
+
+不是。更准确的关系是：
+
+- `process.env.PORT` 是**程序启动前**就存在的输入（来自系统环境变量/命令行/或 `.env` 被你用 `dotenv` 显式加载进来）。
+- 代码在启动时读取它，放进 `PORT_RAW`，再解析成最终的 `port`。
+- 然后调用 `app.listen(port)`，服务器才开始监听这个端口。
+
+也就是说：**端口监听是你用 `port` 去 listen 的结果，不会反过来“写回”到 `process.env`**。
+
+另外注意大小写：本项目里用的是 `process.env.PORT`（全大写），不是 `process.env.port`。
+
+### 2）是不是“只要启动服务器”，就会有 `process` 变量，以及 `process.env` 之类？
+
+更准确的说法是：**只要你运行的是 Node.js 程序，就有 `process` 这个全局对象**，跟你有没有启动 HTTP 服务器没直接关系。
+
+- `process` 是 Node.js 提供的全局对象
+- `process.env` 是其中的一个属性，表示“当前进程的环境变量集合”（key/value 字符串）
+- `process` 还有很多常用能力，例如：
+  - `process.cwd()`：当前工作目录（相对路径的基准）
+  - `process.exit()`：退出进程
+  - `process.on(...)`：监听信号/异常（比如 SIGINT、unhandledRejection）
