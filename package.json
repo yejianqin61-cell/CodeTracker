@@ -1,0 +1,40 @@
+{
+  "name": "codetracker",
+  "version": "1.0.0",
+  "description": "| 项目     | 内容                                       |\r | -------- | ------------------------------------------ |\r | 文档名称 | CodeTracker 产品需求文档（PRD）            |\r | 产品名称 | CodeTracker                                |\r | 文档版本 | V1.0                                       |\r | 文档状态 | 初稿 / 需求基线                            |\r | 编写日期 | 2026-05-07                                 |\r | 产品类型 | 本地离线桌面应用                           |\r | 适用对象 | 产品、前端开发、后端开发、UI设计、自用开发 |",
+  "main": "dist-electron/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yejianqin61-cell/CodeTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/yejianqin61-cell/CodeTracker/issues"
+  },
+  "homepage": "https://github.com/yejianqin61-cell/CodeTracker#readme",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.4",
+    "@types/node": "^25.6.0",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "autoprefixer": "^10.5.0",
+    "electron": "^42.0.0",
+    "electron-vite": "^5.0.0",
+    "postcss": "^8.5.14",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^6.0.3",
+    "vite": "^7.3.2"
+  },
+  "dependencies": {
+    "pinia": "^3.0.4",
+    "vue": "^3.5.34",
+    "vue-router": "^5.0.6"
+  }
+}

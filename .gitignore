@@ -1,0 +1,54 @@
+## dependencies
+node_modules/
+
+## build outputs
+dist/
+dist-electron/
+
+## logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+## runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+## coverage
+coverage/
+*.lcov
+.nyc_output/
+
+## cache
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+## env
+.env
+.env.*
+!.env.example
+
+## OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+## editor
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+## Cursor project state
+.cursor/
+
+## TypeScript
+*.tsbuildinfo
+
