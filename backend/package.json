@@ -1,0 +1,14 @@
+{
+  "name": "codetracker-backend",
+  "version": "0.0.1",
+  "private": true,
+  "description": "CodeTracker local Express + SQLite API",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "express": "^4.21.2"
+  }
+}
