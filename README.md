@@ -1,827 +1,206 @@
-# CodeTracker 产品需求文档（PRD）
-
-## 1. 文档信息
-
-| 项目     | 内容                                       |
-| -------- | ------------------------------------------ |
-| 文档名称 | CodeTracker 产品需求文档（PRD）            |
-| 产品名称 | CodeTracker                                |
-| 文档版本 | V1.0                                       |
-| 文档状态 | 初稿 / 需求基线                            |
-| 编写日期 | 2026-05-07                                 |
-| 产品类型 | 本地离线桌面应用                           |
-| 适用对象 | 产品、前端开发、后端开发、UI设计、自用开发 |
-
-------
-
-# 2. 文档目的
-
-本文档用于明确 CodeTracker 的：
-
-- 产品目标
-- 功能边界
-- MVP / V1 / V2 版本规划
-- 核心数据结构
-- 页面结构
-- 非功能需求
-- 开发优先级
-
-本文档作为后续：
-
-- 前端开发
-- 后端开发
-- 数据库设计
-- UI设计
-- Electron打包
-
-的统一需求依据。
-
-------
-
-# 3. 产品定义与边界
-
-------
-
-## 3.1 产品定义
-
-CodeTracker 是一个：
-
-# 面向程序员个人开发者的本地离线桌面应用。
-
-产品用于：
-
-- 记录每日开发活动
-- 记录代码量
-- 记录开发日志
-- 记录开发时长
-- 可视化开发活跃度
-- 沉淀长期开发成长轨迹
-
-------
-
-## 3.2 核心定位
-
-CodeTracker 的核心定位：
-
-- 程序员开发日志系统
-- 程序员成长记录工具
-- 开发活跃度追踪工具
-- 本地离线开发工作台
-
-------
-
-## 3.3 核心原则
-
-### 本地优先原则
-
-所有数据默认仅存储于本地设备。
-
-------
-
-### 离线可用原则
-
-断网情况下所有功能必须完整可用。
-
-------
-
-### 快速记录原则
-
-用户应在数秒内完成一次开发日志录入。
-
-------
-
-### 长期沉淀原则
-
-所有开发记录可长期追溯与统计。
-
-------
-
-### 低打扰原则
-
-不引入复杂协作、社交与企业流程。
-
-------
-
-## 3.4 非目标
-
-以下内容不属于当前产品范围：
-
-- 云同步
-- 在线账号系统
-- 团队协作
-- SaaS 化
-- 在线数据库
-- 社交功能
-- 多人实时同步
-- 企业级项目管理
-
-------
-
-# 4. 背景与问题陈述
-
-当前多数程序员：
-
-- 无法长期记录开发过程
-- 缺乏可视化成长轨迹
-- 无法回顾过去具体做过什么
-- 只有 Git Commit，缺乏真正的开发日志
-
-现有工具：
-
-- 偏团队协作
-- 偏企业流程
-- 偏代码托管
-- 不适合个人长期沉淀
-
-CodeTracker 的目标：
-
-# 建立一个属于程序员自己的开发人生记录器。
-
-------
-
-# 5. 产品目标与核心指标
-
-------
-
-## 5.1 产品目标
-
-### 产品目标
-
-- 建立个人开发记录体系
-- 提供快速开发日志录入能力
-- 提供代码量统计能力
-- 提供开发时长统计能力
-- 提供开发活跃度热力图
-- 提供长期成长可视化能力
-
-------
-
-## 5.2 成功指标
-
-| 指标         | 说明                         |
-| ------------ | ---------------------------- |
-| 日志录入耗时 | 用户应在 10 秒内完成一次录入 |
-| 启动时间     | 应用启动时间 < 3 秒          |
-| 查询速度     | 日志查询响应时间 < 100ms     |
-| 数据安全     | 本地数据关闭应用后不丢失     |
-| 离线能力     | 断网情况下功能完全可用       |
-
-------
-
-# 6. 用户与使用场景
-
-------
-
-## 6.1 目标用户
-
-- 独立开发者
-- 学生开发者
-- 长期学习编程的用户
-- 希望记录成长轨迹的程序员
-
-------
-
-## 6.2 核心使用场景
-
-### 场景 1：快速记录开发内容
-
-用户完成开发后：
-
-快速记录：
-
-- 今日做了什么
-- 写了多少代码
-- 花费了多少时间
-
-------
-
-### 场景 2：查看历史开发记录
-
-用户可：
-
-- 查看过去某天做了什么
-- 查看某项目历史
-- 回顾成长过程
-
-------
-
-### 场景 3：查看开发活跃度
-
-用户可：
-
-- 查看热力图
-- 查看连续开发天数
-- 查看开发趋势
-
-------
-
-# 7. 产品信息架构
-
-```
-CodeTracker
-│
-├── 首页 Dashboard
-│
-├── 开发日志 Logs
-│
-├── 日历 Heatmap
-│
-├── 统计 Statistics
-│
-└── 设置 Settings
+<p align="center">
+  <a href="https://raw.githubusercontent.com/yejianqin61-cell/CodeTracker/main/docs/readme-interactive.html" title="在浏览器中打开（打字机 + 标签动效 + 双语切换）">
+    <img src="https://img.shields.io/badge/README-交互炫酷版-6366f1?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open interactive README" />
+  </a>
+  <br />
+  <sub>若 Raw 页面未正常执行脚本，可改用 <a href="https://cdn.jsdelivr.net/gh/yejianqin61-cell/CodeTracker@main/docs/readme-interactive.html">jsDelivr 镜像</a> 打开。</sub>
+</p>
+
+<p align="center">
+  <a href="https://www.electronjs.org/"><img src="https://img.shields.io/badge/Electron-33.4-47848F?style=flat-square&logo=electron&logoColor=white" alt="Electron" /></a>
+  <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/Vue-3-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue" /></a>
+  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" /></a>
+  <a href="https://pinia.vuejs.org/"><img src="https://img.shields.io/badge/Pinia-3-ffd859?style=flat-square&logo=vue.js&logoColor=black" alt="Pinia" /></a>
+  <a href="https://router.vuejs.org/"><img src="https://img.shields.io/badge/Vue_Router-4-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue Router" /></a>
+</p>
+
+<p align="center">
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.js-20%2B-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js" /></a>
+  <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/Express-4-000000?style=flat-square&logo=express&logoColor=white" alt="Express" /></a>
+  <a href="https://www.sqlite.org/"><img src="https://img.shields.io/badge/SQLite-3-003B57?style=flat-square&logo=sqlite&logoColor=white" alt="SQLite" /></a>
+  <a href="https://github.com/WiseLibs/better-sqlite3"><img src="https://img.shields.io/badge/better--sqlite3-12-414141?style=flat-square&logo=sqlite&logoColor=white" alt="better-sqlite3" /></a>
+  <a href="https://electron-vite.org/"><img src="https://img.shields.io/badge/electron--vite-5-9FE2F0?style=flat-square&logo=electron&logoColor=black" alt="electron-vite" /></a>
+  <a href="https://www.electron.build/"><img src="https://img.shields.io/badge/electron--builder-26-4B5563?style=flat-square&logo=electron&logoColor=white" alt="electron-builder" /></a>
+  <img src="https://img.shields.io/badge/PostCSS-8-DD3A0A?style=flat-square&logo=postcss&logoColor=white" alt="PostCSS" />
+  <img src="https://img.shields.io/badge/Autoprefixer-10-38B2AC?style=flat-square&logo=postcss&logoColor=white" alt="Autoprefixer" />
+</p>
+
+<p align="center">
+  <strong>CodeTracker</strong> — 本地离线代码活动记录桌面应用（MVP）<br />
+  <sub>GitHub 仓库内 README 为静态 Markdown；<strong>打字机、渐变背景、技术标签入场动效、中英切换按钮</strong>请打开上方「交互炫酷版」。</sub>
+</p>
+
+---
+
+## 语言 / Language
+
+在 GitHub 上阅读时，**点击下列标题展开**即可切换正文语言（可同时展开对照阅读）。
+
+When viewing on GitHub, **click the headings below** to expand the section in your language.
+
+<details open>
+<summary><strong>简体中文</strong></summary>
+
+本地离线使用的**代码活动记录**桌面应用（MVP）：用 SQLite 存数据，Vue + Electron 做界面，Express 提供本地 API。数据不出本机，无需登录。
+
+**源码仓库：** [github.com/yejianqin61-cell/CodeTracker](https://github.com/yejianqin61-cell/CodeTracker)
+
+### MVP 功能一览
+
+| 模块 | 说明 |
+|------|------|
+| **仪表盘** | 汇总数据、迷你热力图（当前 UTC 自然年）、快速记一条日志、最近动态 |
+| **日志** | 按日期/项目筛选、分页列表；新建 / 编辑 / 删除；支持在界面内新建项目 |
+| **热力图** | GitHub 风格周格；**仅展示 2026 年及以后**的 UTC 自然年，年份下拉切换 |
+| **统计** | 全局汇总、近 7/30 日卡片、与热力图接口一致的数据口径 |
+| **设置** | 界面语言（中/英）、API 基地址展示、健康检查、开源仓库链接 |
+| **国际化** | 中文 / English，语言偏好保存在本机 `localStorage` |
+
+**后端能力（REST `/api`）**：健康检查、项目 CRUD、日志 CRUD 与筛选分页、统计摘要与热力图区间查询。契约见 [`backend/docs/api.md`](backend/docs/api.md)。
+
+### 技术栈（表格）
+
+| 层级 | 技术 |
+|------|------|
+| 桌面壳 | Electron **33.4.11**（与 `better-sqlite3` 预编译 ABI 对齐） |
+| 前端 | Vue 3、Vue Router（Hash）、Pinia、Tailwind CSS 4、TypeScript、Vite |
+| 后端 | Node.js、Express、`better-sqlite3`（SQLite） |
+| 构建 | electron-vite、electron-builder、PostCSS、Autoprefixer |
+
+### 环境要求
+
+- **Node.js** 建议 **20 LTS** 或 **22**
+- **Windows**：打安装包需联网执行 `npm ci` / 下载依赖；若需从源码编译原生模块，建议安装 **Visual Studio Build Tools**（打包流程优先使用预编译包）
+
+### 开发运行
+
+仓库根目录为 Electron + 前端工程；**后端在 `backend/` 子目录**。
+
+```bash
+# 根目录
+npm install
+cd backend && npm install && cd ..
 ```
 
-------
-
-# 8. MVP / V1 / V2 版本规划
-
-------
-
-# 8.1 MVP 功能范围
-
-## MVP 目标
-
-形成：
-
-# 「记录 → 回顾 → 激励」
-
-完整闭环。
-
-------
-
-## MVP 功能
-
-------
-
-### 1. 开发日志录入
-
-支持字段：
-
-- 日期
-- 项目名称
-- 代码量
-- 开发时长
-- 开发备注
-
-------
-
-### 2. 多日志记录
-
-支持：
-
-- 一天内创建多条开发记录
-
-例如：
-
-- 上午修 Bug
-- 下午写功能
-- 晚上学习算法
-
-------
-
-### 3. 首页 Dashboard
-
-显示：
-
-- 今日代码量
-- 总代码量
-- 今日开发时长
-- 总开发时长
-- 连续开发天数
-
-------
-
-### 4. GitHub 风格热力图
-
-按日期展示：
-
-- 开发活跃度
-- 开发强度
-
-颜色越深代表活跃度越高。
-
-------
-
-### 5. 日历详情页
-
-点击日期后：
-
-查看：
-
-- 当天总代码量
-- 当天总开发时长
-- 当天所有开发记录
-
-示例：
-
-```
-2026-05-07
-
-Dorm
-+532 lines
-2h30m
-
-完成：
-- 评论系统
-- 登录状态修复
-
-----------------
-
-数据结构学习
-+120 lines
-1h20m
-
-完成：
-- 双链表练习
+```bash
+# 终端 A：后端（默认 http://127.0.0.1:3033 ，数据库 backend/database.db）
+cd backend && npm start
 ```
 
-------
-
-### 6. SQLite 本地存储
-
-所有数据：
-
-- 本地保存
-- 不联网
-- 不上传
-
-------
-
-### 7. Electron 桌面打包
-
-支持：
-
-- Windows 桌面运行
-
-------
-
-## MVP 验收标准
-
-- 用户可成功新增开发日志
-- 日志关闭应用后不会丢失
-- 用户可查看历史记录
-- 用户可查看热力图
-- 用户可点击日期查看详情
-- 用户可查看统计信息
-- 应用断网情况下完整运行
-- 应用可成功打包为桌面应用
-
-------
-
-# 8.2 V1 功能范围
-
-------
-
-## V1 目标
-
-提升：
-
-# “个人开发工作台”体验。
-
-------
-
-## V1 功能
-
-------
-
-### 1. 项目系统
-
-支持：
-
-- 多项目分类
-- 项目统计
-- 项目筛选
-
-------
-
-### 2. Markdown 日志
-
-支持：
-
-- Markdown
-- 代码块
-- 图片插入
-
-------
-
-### 3. 标签系统
-
-支持：
-
-- bugfix
-- feature
-- refactor
-- study
-- algorithm
-
-------
-
-### 4. 搜索系统
-
-支持：
-
-- 按关键词搜索
-- 按项目搜索
-- 按标签搜索
-
-------
-
-### 5. 数据导出
-
-支持：
-
-- Markdown 导出
-- JSON 导出
-
-------
-
-### 6. 自动备份
-
-支持：
-
-- SQLite 自动备份
-
-------
-
-## V1 验收标准
-
-- 用户可管理多个项目
-- Markdown 正常渲染
-- 搜索结果正确
-- 数据导出正常
-- 自动备份稳定运行
-
-------
-
-# 8.3 V2 功能范围
-
-------
-
-## V2 目标
-
-从：
-
-# “开发记录器”
-
-升级为：
-
-# “开发分析平台”。
-
-------
-
-## V2 功能
-
-------
-
-### 1. Git 自动分析
-
-自动读取：
-
-- git log
-- git diff
-
-统计：
-
-- commit 数
-- 新增代码
-- 删除代码
-
-------
-
-### 2. 开发时间追踪
-
-统计：
-
-- 今日开发时长
-- 本周开发时长
-- 月度开发时长
-
-------
-
-### 3. AI 周报生成
-
-自动生成：
-
-```
-本周完成：
-
-- Dorm 评论系统
-- 图片缓存优化
-- 数据结构学习
+```bash
+# 终端 B：Electron 开发窗口
+npm run dev
 ```
 
-------
+可选：环境变量 **`VITE_API_BASE`** 覆盖 API 根地址（见 `src/renderer/src/api/http.ts`）。
 
-### 4. 开发趋势分析
+### 生产构建
 
-支持：
+| 命令 | 说明 |
+|------|------|
+| `npm run build` | 仅编译前端 + Electron 主/预加载脚本 |
+| `npm run dist` | 解锁占用 → 编译 → `stage:backend` → NSIS 安装包 + portable → `release/` |
+| `npm run dist:dir` | 同上，仅解包到 `release/win-unpacked/` |
 
-- 月度趋势
-- 高频项目
-- 活跃时间段
+安装版会**自动启动内置后端**；数据库在 **`%AppData%\Roaming\codetracker\codetracker.db`**，与开发时 `backend/database.db` **不是同一文件**。
 
-------
-
-### 5. 本地 AI 助手
-
-支持：
-
-- Ollama 本地模型接入
-- 本地总结
-- 本地分析
-
-------
-
-# 9. 页面设计
-
-------
-
-## 9.1 首页 Dashboard
-
-显示：
-
-- 今日代码量
-- 总代码量
-- 开发时长
-- 连续开发天数
-- 热力图
-
-------
-
-## 9.2 日志页面
-
-支持：
-
-- 日志列表
-- 新增日志
-- 编辑日志
-- 删除日志
-
-------
-
-## 9.3 日历页面
-
-支持：
-
-- GitHub 风格热力图
-- 日期点击
-- 日期详情查看
-
-------
-
-## 9.4 统计页面
-
-支持：
-
-- 周统计
-- 月统计
-- 项目统计
-
-------
-
-## 9.5 设置页面
-
-支持：
-
-- 数据库位置
-- 自动备份
-- 导出数据
-
-------
-
-# 10. 核心数据对象
-
-------
-
-## 10.1 Project
-
-项目对象。
-
-字段：
-
-| 字段       | 类型     |
-| ---------- | -------- |
-| id         | INTEGER  |
-| name       | TEXT     |
-| created_at | DATETIME |
-
-------
-
-## 10.2 Log
-
-开发日志对象。
-
-字段：
-
-| 字段             | 类型     |
-| ---------------- | -------- |
-| id               | INTEGER  |
-| date             | TEXT     |
-| project_id       | INTEGER  |
-| code_lines       | INTEGER  |
-| duration_minutes | INTEGER  |
-| note             | TEXT     |
-| created_at       | DATETIME |
-
-------
-
-## 10.3 Tag
-
-标签对象。
-
-字段：
-
-| 字段 | 类型    |
-| ---- | ------- |
-| id   | INTEGER |
-| name | TEXT    |
-
-------
-
-# 11. 数据库设计
-
-------
-
-## SQLite
-
-数据库类型：
+### 目录结构（简要）
 
 ```
-SQLite
+CodeTracker/
+├── src/                 # Electron main/preload + Vue 渲染进程
+├── backend/             # Express + SQLite
+├── docs/                # 含 readme-interactive.html 交互说明页
+├── scripts/             # stage-backend、dist-unlock
+├── electron-builder.yml
+└── package.json
 ```
 
-数据库文件：
+### 发布
 
+- 推荐分发 **`release/`** 下的 **`CodeTracker Setup *.exe`**
+- 或分发完整 **`win-unpacked`** 压缩包（解压后运行 `CodeTracker.exe`）
+- 当前为 **Windows x64**；GitHub **Releases** 上传对应产物即可
+
+### 许可
+
+以 `package.json` 中 `license` 字段为准（**ISC**）。
+
+</details>
+
+<details>
+<summary><strong>English</strong></summary>
+
+**CodeTracker** is a **local-first** desktop MVP for logging coding activity: **SQLite** storage, **Vue + Electron** UI, **Express** HTTP API on your machine. No cloud account; data stays offline.
+
+**Repository:** [github.com/yejianqin61-cell/CodeTracker](https://github.com/yejianqin61-cell/CodeTracker)
+
+### MVP feature set
+
+| Module | Description |
+|--------|-------------|
+| **Dashboard** | Summary, mini heatmap (current UTC calendar year), quick log entry, recent activity |
+| **Logs** | Filter by date/project, paginated list, full CRUD, create projects in-app |
+| **Heatmap** | GitHub-style grid; **years ≥ 2026** only (UTC), year selector |
+| **Statistics** | Global totals, 7/30-day cards, aligned with heatmap API semantics |
+| **Settings** | UI locale (zh/en), API base URL, health check, repository link |
+| **i18n** | Chinese / English; preference stored in `localStorage` |
+
+**Backend (`/api`)**: health, projects CRUD, logs CRUD + filters/pagination, stats summary + heatmap range. Contract: [`backend/docs/api.md`](backend/docs/api.md).
+
+### Tech stack (table)
+
+| Layer | Stack |
+|-------|--------|
+| Shell | **Electron 33.4.11** (aligned with `better-sqlite3` prebuild ABI) |
+| UI | Vue 3, Vue Router (hash), Pinia, Tailwind CSS 4, TypeScript, Vite |
+| API | Node.js, Express, `better-sqlite3` (SQLite) |
+| Build | electron-vite, electron-builder, PostCSS, Autoprefixer |
+
+### Prerequisites
+
+- **Node.js** 20 LTS or 22 recommended  
+- **Windows**: packaging needs network for `npm ci` / downloads; **Visual Studio Build Tools** if you must compile native addons from source (prebuilt path preferred)
+
+### Development
+
+```bash
+npm install
+cd backend && npm install && cd ..
 ```
-database.db
+
+```bash
+# Terminal A — API (default http://127.0.0.1:3033 , DB file backend/database.db)
+cd backend && npm start
 ```
 
-------
-
-## logs 表
-
-```
-CREATE TABLE logs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date TEXT,
-    project_id INTEGER,
-    code_lines INTEGER,
-    duration_minutes INTEGER,
-    note TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+```bash
+# Terminal B — Electron dev
+npm run dev
 ```
 
-------
+Optional: **`VITE_API_BASE`** overrides the API origin (`src/renderer/src/api/http.ts`).
 
-# 12. 技术架构
+### Production builds
 
-------
+| Script | What it does |
+|--------|----------------|
+| `npm run build` | Compile renderer + main/preload only |
+| `npm run dist` | Unlock → build → `stage:backend` → NSIS + portable → `release/` |
+| `npm run dist:dir` | Same pipeline, output unpacked `win-unpacked/` only |
 
-## 前端
+The packaged app **starts the embedded backend** automatically. DB path: **`%AppData%\Roaming\codetracker\codetracker.db`** (not the same as dev `backend/database.db`).
 
-- Vue3
-- Vite
-- TailwindCSS
+### Ship
 
-------
+- Prefer **`CodeTracker Setup *.exe`** from `release/`  
+- Or ship a zip of **`win-unpacked`** (run `CodeTracker.exe` inside)  
+- **Windows x64** today; publish binaries via GitHub **Releases**
 
-## 桌面容器
+### License
 
-- Electron
+See `package.json` → **ISC**.
 
-------
-
-## 后端
-
-- Node.js
-- Express
-
-------
-
-## 数据库
-
-- SQLite
-
-------
-
-# 13. 非功能需求
-
-------
-
-## 13.1 性能要求
-
-- 主界面加载时间 < 2 秒
-- 日志新增响应时间 < 100ms
-- SQLite 查询响应时间 < 50ms
-
-------
-
-## 13.2 数据安全
-
-- 所有数据仅存储于本地
-- 不进行任何网络上传
-- 不依赖云服务
-
-------
-
-## 13.3 可用性
-
-- 断网完全可运行
-- 异常退出后数据不丢失
-- 数据自动持久化
-
-------
-
-## 13.4 可扩展性
-
-后续支持：
-
-- Git 分析
-- AI 分析
-- 自动统计
-- 本地 AI 模型
-
-------
-
-# 14. 开发里程碑
-
-------
-
-## 阶段 1：基础架构
-
-目标：
-
-- Electron 跑通
-- Vue 跑通
-- Express 跑通
-- SQLite 连通
-
-------
-
-## 阶段 2：MVP 核心功能
-
-目标：
-
-- 日志录入
-- 日志展示
-- Dashboard
-- 热力图
-- 日历详情页
-
-------
-
-## 阶段 3：体验优化
-
-目标：
-
-- UI 美化
-- 动画
-- 数据统计
-- 响应优化
-
-------
-
-## 阶段 4：高级功能
-
-目标：
-
-- Markdown
-- 搜索
-- Git 分析
-- AI 分析
-
-------
-
-# 15. 风险与应对
-
-| 风险              | 描述             | 应对方案               |
-| ----------------- | ---------------- | ---------------------- |
-| 功能膨胀          | 功能越做越多     | 严格区分 MVP / V1 / V2 |
-| Electron 体积较大 | 启动占用内存     | 保持页面轻量           |
-| 自动统计复杂度高  | Git 分析容易复杂 | MVP 阶段坚持手动录入   |
-| UI 复杂度提升     | 页面状态增多     | 先保证功能闭环         |
-
-------
-
-# 16. 总结
-
-CodeTracker 的核心目标不是：
-
-# “统计代码量”。
-
-而是：
-
-# 建立程序员长期开发成长记录系统。
-
-产品强调：
-
-- 本地离线
-- 快速记录
-- 长期沉淀
-- 开发轨迹
-- 成长可视化
-
-最终形成：
-
-# “属于程序员自己的开发人生时间轴”。
+</details>
