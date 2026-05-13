@@ -1,12 +1,4 @@
 <p align="center">
-  <a href="https://raw.githubusercontent.com/yejianqin61-cell/CodeTracker/main/docs/readme-interactive.html" title="在浏览器中打开（打字机 + 标签动效 + 双语切换）">
-    <img src="https://img.shields.io/badge/README-交互炫酷版-6366f1?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open interactive README" />
-  </a>
-  <br />
-  <sub>若 Raw 页面未正常执行脚本，可改用 <a href="https://cdn.jsdelivr.net/gh/yejianqin61-cell/CodeTracker@main/docs/readme-interactive.html">jsDelivr 镜像</a> 打开。</sub>
-</p>
-
-<p align="center">
   <a href="https://www.electronjs.org/"><img src="https://img.shields.io/badge/Electron-33.4-47848F?style=flat-square&logo=electron&logoColor=white" alt="Electron" /></a>
   <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/Vue-3-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue" /></a>
   <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" /></a>
@@ -27,27 +19,104 @@
   <img src="https://img.shields.io/badge/Autoprefixer-10-38B2AC?style=flat-square&logo=postcss&logoColor=white" alt="Autoprefixer" />
 </p>
 
-<p align="center">
-  <strong>CodeTracker</strong> — 本地离线代码活动记录桌面应用（MVP）<br />
-  <sub>GitHub 仓库内 README 为静态 Markdown；<strong>打字机、渐变背景、技术标签入场动效、中英切换按钮</strong>请打开上方「交互炫酷版」。</sub>
-</p>
+# CodeTracker
 
 ---
 
-## 语言 / Language
+## Overview
 
-在 GitHub 上阅读时，**点击下列标题展开**即可切换正文语言（可同时展开对照阅读）。
+**CodeTracker** is a **local-first** desktop MVP for logging coding activity: **SQLite** storage, **Vue + Electron** UI, and an **Express** HTTP API on your machine. No cloud account; data stays offline.
 
-When viewing on GitHub, **click the headings below** to expand the section in your language.
+**Repository:** [github.com/yejianqin61-cell/CodeTracker](https://github.com/yejianqin61-cell/CodeTracker)
 
-<details open>
-<summary><strong>简体中文</strong></summary>
+### MVP features
 
-本地离线使用的**代码活动记录**桌面应用（MVP）：用 SQLite 存数据，Vue + Electron 做界面，Express 提供本地 API。数据不出本机，无需登录。
+| Module | Description |
+|--------|-------------|
+| **Dashboard** | Summary, mini heatmap (current UTC calendar year), quick log entry, recent activity |
+| **Logs** | Filter by date/project, paginated list, full CRUD, create projects in-app |
+| **Heatmap** | GitHub-style grid; **years ≥ 2026** only (UTC), year selector |
+| **Statistics** | Global totals, 7/30-day cards, aligned with heatmap API semantics |
+| **Settings** | UI locale (zh/en), API base URL, health check, repository link |
+| **i18n** | Chinese / English; preference stored in `localStorage` |
+
+**Backend (`/api`)**: health, projects CRUD, logs CRUD + filters/pagination, stats summary + heatmap range. Contract: [`backend/docs/api.md`](backend/docs/api.md).
+
+### Tech stack
+
+| Layer | Stack |
+|-------|--------|
+| Shell | **Electron 33.4.11** (aligned with `better-sqlite3` prebuild ABI) |
+| UI | Vue 3, Vue Router (hash), Pinia, Tailwind CSS 4, TypeScript, Vite |
+| API | Node.js, Express, `better-sqlite3` (SQLite) |
+| Build | electron-vite, electron-builder, PostCSS, Autoprefixer |
+
+### Prerequisites
+
+- **Node.js** 20 LTS or 22 recommended  
+- **Windows**: packaging needs network for `npm ci` / downloads; **Visual Studio Build Tools** if you must compile native addons from source (prebuilt path preferred)
+
+### Development
+
+The repo root is the Electron + renderer project; the **API lives in `backend/`**.
+
+```bash
+npm install
+cd backend && npm install && cd ..
+```
+
+```bash
+# Terminal A — API (default http://127.0.0.1:3033 , DB file backend/database.db)
+cd backend && npm start
+```
+
+```bash
+# Terminal B — Electron dev
+npm run dev
+```
+
+Optional: **`VITE_API_BASE`** overrides the API origin (`src/renderer/src/api/http.ts`).
+
+### Production builds
+
+| Script | What it does |
+|--------|----------------|
+| `npm run build` | Compile renderer + main/preload only |
+| `npm run dist` | Unlock → build → `stage:backend` → NSIS + portable → `release/` |
+| `npm run dist:dir` | Same pipeline, output unpacked `win-unpacked/` only |
+
+The packaged app **starts the embedded backend** automatically. DB path: **`%AppData%\Roaming\codetracker\codetracker.db`** (not the same as dev `backend/database.db`).
+
+### Repository layout
+
+```
+CodeTracker/
+├── src/                 # Electron main/preload + Vue renderer
+├── backend/             # Express + SQLite (+ backend/docs/api.md)
+├── scripts/             # stage-backend, dist-unlock
+├── electron-builder.yml
+└── package.json
+```
+
+### Distribution
+
+- Prefer **`CodeTracker Setup *.exe`** from `release/`  
+- Or ship a zip of **`win-unpacked`** (run `CodeTracker.exe` inside)  
+- **Windows x64** today; publish binaries via GitHub **Releases**
+
+### License
+
+See `package.json` → **ISC**.
+
+---
+
+## 概述（简体中文）
+
+**CodeTracker** 是一款**本地离线**的代码活动记录桌面应用（MVP）：使用 **SQLite** 存储数据，**Vue + Electron** 作为界面，**Express** 在本地提供 HTTP API。无需云端账号，数据不出本机。
 
 **源码仓库：** [github.com/yejianqin61-cell/CodeTracker](https://github.com/yejianqin61-cell/CodeTracker)
 
-### MVP 功能一览
+### MVP 功能
 
 | 模块 | 说明 |
 |------|------|
@@ -58,9 +127,9 @@ When viewing on GitHub, **click the headings below** to expand the section in yo
 | **设置** | 界面语言（中/英）、API 基地址展示、健康检查、开源仓库链接 |
 | **国际化** | 中文 / English，语言偏好保存在本机 `localStorage` |
 
-**后端能力（REST `/api`）**：健康检查、项目 CRUD、日志 CRUD 与筛选分页、统计摘要与热力图区间查询。契约见 [`backend/docs/api.md`](backend/docs/api.md)。
+**后端（`/api`）**：健康检查、项目 CRUD、日志 CRUD 与筛选分页、统计摘要与热力图区间。契约见 [`backend/docs/api.md`](backend/docs/api.md)。
 
-### 技术栈（表格）
+### 技术栈
 
 | 层级 | 技术 |
 |------|------|
@@ -79,7 +148,6 @@ When viewing on GitHub, **click the headings below** to expand the section in yo
 仓库根目录为 Electron + 前端工程；**后端在 `backend/` 子目录**。
 
 ```bash
-# 根目录
 npm install
 cd backend && npm install && cd ..
 ```
@@ -111,8 +179,7 @@ npm run dev
 ```
 CodeTracker/
 ├── src/                 # Electron main/preload + Vue 渲染进程
-├── backend/             # Express + SQLite
-├── docs/                # 含 readme-interactive.html 交互说明页
+├── backend/             # Express + SQLite（含 backend/docs/api.md）
 ├── scripts/             # stage-backend、dist-unlock
 ├── electron-builder.yml
 └── package.json
@@ -122,85 +189,8 @@ CodeTracker/
 
 - 推荐分发 **`release/`** 下的 **`CodeTracker Setup *.exe`**
 - 或分发完整 **`win-unpacked`** 压缩包（解压后运行 `CodeTracker.exe`）
-- 当前为 **Windows x64**；GitHub **Releases** 上传对应产物即可
+- 当前为 **Windows x64**；在 GitHub **Releases** 上传对应产物即可
 
 ### 许可
 
 以 `package.json` 中 `license` 字段为准（**ISC**）。
-
-</details>
-
-<details>
-<summary><strong>English</strong></summary>
-
-**CodeTracker** is a **local-first** desktop MVP for logging coding activity: **SQLite** storage, **Vue + Electron** UI, **Express** HTTP API on your machine. No cloud account; data stays offline.
-
-**Repository:** [github.com/yejianqin61-cell/CodeTracker](https://github.com/yejianqin61-cell/CodeTracker)
-
-### MVP feature set
-
-| Module | Description |
-|--------|-------------|
-| **Dashboard** | Summary, mini heatmap (current UTC calendar year), quick log entry, recent activity |
-| **Logs** | Filter by date/project, paginated list, full CRUD, create projects in-app |
-| **Heatmap** | GitHub-style grid; **years ≥ 2026** only (UTC), year selector |
-| **Statistics** | Global totals, 7/30-day cards, aligned with heatmap API semantics |
-| **Settings** | UI locale (zh/en), API base URL, health check, repository link |
-| **i18n** | Chinese / English; preference stored in `localStorage` |
-
-**Backend (`/api`)**: health, projects CRUD, logs CRUD + filters/pagination, stats summary + heatmap range. Contract: [`backend/docs/api.md`](backend/docs/api.md).
-
-### Tech stack (table)
-
-| Layer | Stack |
-|-------|--------|
-| Shell | **Electron 33.4.11** (aligned with `better-sqlite3` prebuild ABI) |
-| UI | Vue 3, Vue Router (hash), Pinia, Tailwind CSS 4, TypeScript, Vite |
-| API | Node.js, Express, `better-sqlite3` (SQLite) |
-| Build | electron-vite, electron-builder, PostCSS, Autoprefixer |
-
-### Prerequisites
-
-- **Node.js** 20 LTS or 22 recommended  
-- **Windows**: packaging needs network for `npm ci` / downloads; **Visual Studio Build Tools** if you must compile native addons from source (prebuilt path preferred)
-
-### Development
-
-```bash
-npm install
-cd backend && npm install && cd ..
-```
-
-```bash
-# Terminal A — API (default http://127.0.0.1:3033 , DB file backend/database.db)
-cd backend && npm start
-```
-
-```bash
-# Terminal B — Electron dev
-npm run dev
-```
-
-Optional: **`VITE_API_BASE`** overrides the API origin (`src/renderer/src/api/http.ts`).
-
-### Production builds
-
-| Script | What it does |
-|--------|----------------|
-| `npm run build` | Compile renderer + main/preload only |
-| `npm run dist` | Unlock → build → `stage:backend` → NSIS + portable → `release/` |
-| `npm run dist:dir` | Same pipeline, output unpacked `win-unpacked/` only |
-
-The packaged app **starts the embedded backend** automatically. DB path: **`%AppData%\Roaming\codetracker\codetracker.db`** (not the same as dev `backend/database.db`).
-
-### Ship
-
-- Prefer **`CodeTracker Setup *.exe`** from `release/`  
-- Or ship a zip of **`win-unpacked`** (run `CodeTracker.exe` inside)  
-- **Windows x64** today; publish binaries via GitHub **Releases**
-
-### License
-
-See `package.json` → **ISC**.
-
-</details>
