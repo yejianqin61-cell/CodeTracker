@@ -2,5 +2,79 @@
 
 :root {
   color-scheme: dark;
+  --ct-bg-0: #070a12;
+  --ct-bg-1: #0b1020;
+  --ct-bg-2: #0f1629;
+  --ct-glass: rgba(255, 255, 255, 0.04);
+  --ct-glass-border: rgba(255, 255, 255, 0.08);
+  --ct-glow-cyan: rgba(34, 211, 238, 0.35);
+  --ct-glow-violet: rgba(167, 139, 250, 0.4);
+  --ct-glow-emerald: rgba(52, 211, 153, 0.35);
 }
 
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--ct-bg-0);
+  color: #e8edf7;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 0% -20%, rgba(99, 102, 241, 0.18), transparent 50%),
+    radial-gradient(ellipse 100% 60% at 100% 0%, rgba(34, 211, 238, 0.1), transparent 45%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(16, 185, 129, 0.08), transparent 50%),
+    linear-gradient(180deg, var(--ct-bg-1) 0%, var(--ct-bg-0) 100%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(167, 139, 250, 0.35);
+  color: #fff;
+}
+
+/* Scrollbar — subtle, dev-tool feel */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.35);
+  background-clip: padding-box;
+}
+
+@keyframes ct-hand-wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(14deg);
+  }
+  30% {
+    transform: rotate(-8deg);
+  }
+  45% {
+    transform: rotate(14deg);
+  }
+}

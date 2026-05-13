@@ -34,27 +34,25 @@ const {getDb}=require('../db')
 
 function listLogs(filters){
     const db=getDb()
-    const where=[]
+    const conds=[]
     const params=[]
     if(filters.date){
-        where.push('logs.date=?')
+        conds.push('logs.date = ?')
         params.push(filters.date)
     }
     if(filters.project_id){
-        where.push('logs.project_id=?')
+        conds.push('logs.project_id = ?')
         params.push(filters.project_id)
     }
     if(filters.q){
-        where.push('logs.note LIKE ?')
+        conds.push('logs.note LIKE ?')
         params.push(`%${filters.q}%`)
     }
-    if(where.length){
-        where.unshift('WHERE')
-    }
-    const sql=`SELECT logs.id,date,project_id,projects.name AS project_name,
-    code_lines,duration_minutes, note,logs.created_at
-    FROM logs JOIN projects ON logs.project_id=projects.id
-    ${where.join(' ')}
+    const whereSql = conds.length ? `WHERE ${conds.join(' AND ')}` : ''
+    const sql=`SELECT logs.id, logs.date, logs.project_id, projects.name AS project_name,
+    logs.code_lines, logs.duration_minutes, logs.note, logs.created_at
+    FROM logs JOIN projects ON logs.project_id = projects.id
+    ${whereSql}
     ORDER BY logs.id DESC
     LIMIT ? OFFSET ?`
     params.push(filters.page_size, (filters.page - 1) * filters.page_size)
@@ -80,26 +78,24 @@ function listLogs(filters){
 // ────────────────────────────────────────────────────────────────────
 function countLogs(filters){
     const db=getDb()
-    const where=[]
+    const conds=[]
     const params=[]
     if(filters.date){
-        where.push('logs.date=?')
+        conds.push('logs.date = ?')
         params.push(filters.date)
     }
     if(filters.project_id){
-        where.push('logs.project_id=?')
+        conds.push('logs.project_id = ?')
         params.push(filters.project_id)
     }
     if(filters.q){
-        where.push('logs.note LIKE ?')
+        conds.push('logs.note LIKE ?')
         params.push(`%${filters.q}%`)
     }
-    if(where.length){
-        where.unshift('WHERE')
-    }
+    const whereSql = conds.length ? `WHERE ${conds.join(' AND ')}` : ''
     const sql=`SELECT COUNT(1) AS cnt
     FROM logs
-    ${where.join(' ')}`
+    ${whereSql}`
     const row=db.prepare(sql).get(...params)
     return row ? Number(row.cnt) : 0
 }
@@ -167,6 +163,59 @@ function deleteById(id){
     return info.changes
 }
 
+// stats 用：summary / heatmap 聚合查询
+function aggregateLogs(filters){
+    const db = getDb()
+    const where = []
+    const params = []
+    if (filters && filters.date) {
+        where.push('date=?')
+        params.push(filters.date)
+    }
+    const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : ''
+    const sql = `SELECT
+      COALESCE(SUM(code_lines), 0) AS code_lines,
+      COALESCE(SUM(duration_minutes), 0) AS duration_minutes
+    FROM logs
+    ${whereSql}`
+    const row = db.prepare(sql).get(...params)
+    return {
+        code_lines: row ? Number(row.code_lines) : 0,
+        duration_minutes: row ? Number(row.duration_minutes) : 0
+    }
+}
+
+function aggregateLogsByDate(range){
+    const db = getDb()
+    const sql = `SELECT
+      date,
+      COALESCE(SUM(code_lines), 0) AS code_lines,
+      COALESCE(SUM(duration_minutes), 0) AS duration_minutes
+    FROM logs
+    WHERE date >= ? AND date <= ?
+    GROUP BY date
+    ORDER BY date ASC`
+    return db.prepare(sql).all(range.from, range.to)
+}
+
+function countStreakDays(date){
+    const db = getDb()
+    const rows = db
+      .prepare(`SELECT DISTINCT date FROM logs WHERE date <= ? ORDER BY date DESC`)
+      .all(date)
+      .map(r => r.date)
+    let streak = 0
+    let cursor = date
+    const set = new Set(rows)
+    while (set.has(cursor)) {
+        streak += 1
+        const d = new Date(cursor + 'T00:00:00Z')
+        d.setUTCDate(d.getUTCDate() - 1)
+        cursor = d.toISOString().slice(0, 10)
+    }
+    return streak
+}
+
 // ════════════════════════════════════════════════════════════════════
 // 段落 8 — 参考答案：module.exports
 // ════════════════════════════════════
@@ -175,6 +224,6 @@ function deleteById(id){
 // 手写区 8：导出
 // ────────────────────────────────────────────────────────────────────
 
-module.exports={listLogs,countLogs,findById,insert,update,deleteById}
+module.exports={listLogs,countLogs,findById,insert,update,deleteById,aggregateLogs,aggregateLogsByDate,countStreakDays}
 
 

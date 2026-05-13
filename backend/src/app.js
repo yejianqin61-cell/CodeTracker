@@ -37,6 +37,23 @@ const app = express()
 //
 app.use(express.json({ limit: '1mb' }))
 
+// Electron + Vite 开发态下渲染进程 origin 与 API 端口不同，需允许跨域预检与请求。
+app.use((req, res, next) => {
+  const origin = req.headers.origin
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+    res.setHeader('Vary', 'Origin')
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end()
+  }
+  next()
+})
+
 // =========================================================
 // 4) 挂载业务路由
 // ---------------------------------------------------------

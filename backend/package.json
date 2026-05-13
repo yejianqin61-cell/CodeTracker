@@ -5,7 +5,9 @@
   "description": "CodeTracker local Express + SQLite API",
   "type": "commonjs",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "rebuild:sqlite": "npm rebuild better-sqlite3"
   },
   "dependencies": {
     "better-sqlite3": "^11.10.0",
