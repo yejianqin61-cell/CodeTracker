@@ -1,67 +1,66 @@
 /**
- * @file 开发日志（logs）相关 HTTP 路由声明。
+ * @file Logs 路由：绑定 `/api/logs` 与 `/api/logs/:id`。
  * @description
- * - **挂载路径**：`routes/index.js` 中 `router.use('/logs', logsRoutes)` + 外层 `/api`，
- *   故本文件内 `'/api/logs'` 的相对路径为 **`/`、`/:id`**。
- * - **契约**：`backend/docs/api.md` §4（GET 列表、POST 新增、PUT 修改、DELETE 删除）。
- * - **依赖**：实现后需存在 `../controllers/logs.controller.js`，并导出与下面参考答案同名的 handler。
+ * 挂载：`routes/index.js` → `use('/logs', logsRoutes)`，故此处 `'/'`、`'/:id'`。
+ * @see backend/docs/api.md §4
  *
- * 【书写规范】与项目 Rule「comment-handwrite-teaching」一致：
- * 每段上方为**仅注释**的参考答案，下方「手写区」留空由你补全；**不要**把参考答案抄进注释外再留一份重复实现。
- *
- * 【未完成时】底部仅 `express.Router()` + `module.exports`，不注册路径，避免误挂 undefined handler；
- * 全部手写区补完后，再挂上 `router.get/post/...`。
+ * 【注释规范】参考答案仅在 `//` 注释；手写区留空。
+ * 【启动安全】在完成手写区并挂上 `router.get/post/...` 之前，底部可暂时只 `express.Router()` + `module.exports`，避免挂 undefined。
  */
 
 // ════════════════════════════════════════════════════════════════════
-// 段落 1 — 参考答案：依赖与 router（勿执行，请抄到手写区 1）
+// 段落 1 — 参考答案：依赖与 router
 // ════════════════════════════════════════════════════════════════════
 // const express = require('express')
 // const logsController = require('../controllers/logs.controller')
-//
 // const router = express.Router()
 
 // ────────────────────────────────────────────────────────────────────
 // 手写区 1：依赖与 router
 // ────────────────────────────────────────────────────────────────────
+const express=require('express')
+const logsController=require('../controllers/logs.controller')
+const router=express.Router()
 
 
 
 // ════════════════════════════════════════════════════════════════════
-// 段落 2 — 参考答案：GET /api/logs（Query 见 api.md §4.1）
+// 段落 2 — 参考答案：GET /
 // ════════════════════════════════════════════════════════════════════
 // router.get('/', logsController.listLogs)
 
 // ────────────────────────────────────────────────────────────────────
-// 手写区 2：GET 列表
+// 手写区 2：GET
 // ────────────────────────────────────────────────────────────────────
-
+router.get('/',logsController.listLogs)
 
 
 // ════════════════════════════════════════════════════════════════════
-// 段落 3 — 参考答案：POST /api/logs
+// 段落 3 — 参考答案：POST /
 // ════════════════════════════════════════════════════════════════════
 // router.post('/', logsController.createLog)
 
 // ────────────────────────────────────────────────────────────────────
-// 手写区 3：POST 新增
+// 手写区 3：POST
 // ────────────────────────────────────────────────────────────────────
+router.post('/',logsController.createLog)
 
 
 
 // ════════════════════════════════════════════════════════════════════
-// 段落 4 — 参考答案：PUT /api/logs/:id
+// 段落 4 — 参考答案：PUT /:id
 // ════════════════════════════════════════════════════════════════════
 // router.put('/:id', logsController.updateLog)
 
 // ────────────────────────────────────────────────────────────────────
 // 手写区 4：PUT
 // ────────────────────────────────────────────────────────────────────
+router.put('/:id',logsController.updateLog)
 
 
 
 // ════════════════════════════════════════════════════════════════════
-// 段落 5 — 参考答案：DELETE /api/logs/:id
+// 段落 5 — 参考答案：DELETE /:id
 // ════════════════════════════════════════════════════════════════════
 // router.delete('/:id', logsController.deleteLog)
 
@@ -69,6 +68,7 @@
 // 手写区 5：DELETE
 // ────────────────────────────────────────────────────────────────────
 
+router.delete('/:id',logsController.deleteLog)
 
 
 // ════════════════════════════════════════════════════════════════════
@@ -77,12 +77,8 @@
 // module.exports = router
 
 // ────────────────────────────────────────────────────────────────────
-// 手写区 6：导出（在此之前需已完成手写区 1，且本文件存在 `router` 变量）
+// 手写区 6：导出
 // ────────────────────────────────────────────────────────────────────
+module.exports=router
 
 
-
-const express = require('express')
-const router = express.Router()
-
-module.exports = router

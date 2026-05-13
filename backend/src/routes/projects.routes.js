@@ -1,56 +1,18 @@
 /**
- * @file `routes/projects.routes.js` — `/api/projects` 路由声明（不写业务）。
+ * @fileoverview Projects 路由：将 `/api/projects` 映射到 controller。
  * @description
- * - 挂载链：`app.js` → `/api` → `routes/index.js` → `/projects` → **本 router**。
- * - 本文件内 `'/'` 即 **`/api/projects`**。
- * - 完成本文件并 `module.exports = router` 后，再到 `routes/index.js` **取消注释** `projects` 的 `require` 与 `router.use`。
- *
- * 【规范】参考答案只在 `//` 注释；手写区留空；**本文件底部不要留任何我代写的可执行代码**。
+ * 挂载链：`app` → `/api`（`app.js`）→ `routes/index.js` 的 `/projects` → 本 router。
+ * 本文件中的 `'/'` 即 **`/api/projects`**。
+ * @see {@link ../controllers/projects.controller.js}
+ * @see backend/docs/api.md §3
  */
 
-// ════════════════════════════════════════════════════════════════════
-// 段落 1 — 参考答案：依赖与 router
-// ════════════════════════════════════════════════════════════════════
-// const express = require('express')
-// const projectsController = require('../controllers/projects.controller')
-//
-// const router = express.Router()
+const express = require('express')
+const projectsController = require('../controllers/projects.controller')
 
-// ────────────────────────────────────────────────────────────────────
-// 手写区 1：依赖与 router
-// ────────────────────────────────────────────────────────────────────
+const router = express.Router()
 
+router.get('/', projectsController.listProjects)
+router.post('/', projectsController.createProject)
 
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 2 — 参考答案：GET /
-// ════════════════════════════════════════════════════════════════════
-// router.get('/', projectsController.listProjects)
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 2：GET
-// ────────────────────────────────────────────────────────────────────
-
-
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 3 — 参考答案：POST /
-// ════════════════════════════════════════════════════════════════════
-// router.post('/', projectsController.createProject)
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 3：POST
-// ────────────────────────────────────────────────────────────────────
-
-
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 4 — 参考答案：导出
-// ════════════════════════════════════════════════════════════════════
-// module.exports = router
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 4：导出
-// ────────────────────────────────────────────────────────────────────
-
-
+module.exports = router

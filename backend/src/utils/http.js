@@ -1,42 +1,21 @@
 /**
- * @file `utils/http.js` — 与 HTTP 层相关的纯工具（本文件由你手写实现）。
+ * @file 与 HTTP 语义相关的轻量工具（无 Express 依赖）。
  * @description
- * - 与 projects 无强绑定；后续 `services` 里若要抛 **带 statusCode / code** 的错误，可在此定义 `HttpError`，
- *   供 `middlewares/error.middleware.js` 统一转成 JSON。
- *
- * 【规范】参考答案仅出现在 `//` 注释；`// ─── 手写区` 下留空，由你亲自敲代码。
- * 【注意】本文件当前**无可执行语句**；在其他文件 `require('../utils/http')` 之前，须先完成手写区并导出。
+ * `HttpError` 携带 `statusCode` 与 `code`，供 `middlewares/error.middleware.js` 映射为
+ * `docs/api.md` §6 中的统一 JSON 错误体。
  */
 
-// ════════════════════════════════════════════════════════════════════
-// 段落 1 — 参考答案：HttpError 类（勿执行，抄到手写区 1）
-// ════════════════════════════════════════════════════════════════════
-// class HttpError extends Error {
-//   /**
-//    * @param {number} statusCode
-//    * @param {string} code
-//    * @param {string} message
-//    */
-//   constructor(statusCode, code, message) {
-//     super(message)
-//     this.statusCode = statusCode
-//     this.code = code
-//   }
-// }
+class HttpError extends Error {
+  /**
+   * @param {number} statusCode HTTP 状态码（如 400、404、409）
+   * @param {string} code 对外错误码（如 `BAD_REQUEST`）
+   * @param {string} message 人类可读说明
+   */
+  constructor(statusCode, code, message) {
+    super(message)
+    this.statusCode = statusCode
+    this.code = code
+  }
+}
 
-// ────────────────────────────────────────────────────────────────────
-// 手写区 1：HttpError
-// ────────────────────────────────────────────────────────────────────
-
-
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 2 — 参考答案：导出
-// ════════════════════════════════════════════════════════════════════
-// module.exports = { HttpError }
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 2：导出
-// ────────────────────────────────────────────────────────────────────
-
-
+module.exports = { HttpError }
