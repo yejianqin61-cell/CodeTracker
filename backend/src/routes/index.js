@@ -14,7 +14,8 @@
 // ---------------------------------------------------------
 const express = require('express')
 const healthRoutes = require('./health.routes')
-const projectsRoutes = require('./projects.routes')
+// 完成 `projects.routes.js` 全部手写区并能 `module.exports = router` 后，再取消下面两行注释
+// const projectsRoutes = require('./projects.routes')
 const logsRoutes = require('./logs.routes')
 const statsRoutes = require('./stats.routes')
 
@@ -38,7 +39,7 @@ const router = express.Router()
 // - GET /heatmap
 //
 router.use('/health', healthRoutes)
-router.use('/projects', projectsRoutes)
+// router.use('/projects', projectsRoutes)
 router.use('/logs', logsRoutes)
 router.use('/', statsRoutes) // stats 里可以挂 /summary /heatmap
 

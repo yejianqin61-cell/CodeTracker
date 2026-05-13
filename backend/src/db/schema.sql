@@ -1,17 +1,13 @@
--- CodeTracker MVP — SQLite DDL
--- 约定：与 PRD「核心数据对象」一致；由 db/index.js 在启动时整体 exec。
+-- CodeTracker MVP — SQLite DDL（由 db/index.js exec）
 
--- 项目表：日志通过 project_id 关联
 CREATE TABLE IF NOT EXISTS projects (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- 项目名唯一，避免下拉列表里出现重复名称（可按产品需要改为非唯一）
 CREATE UNIQUE INDEX IF NOT EXISTS idx_projects_name ON projects (name);
 
--- 开发日志表
 CREATE TABLE IF NOT EXISTS logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   date TEXT NOT NULL,
