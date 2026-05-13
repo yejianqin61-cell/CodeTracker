@@ -1,84 +1,16 @@
 /**
- * @file Logs 路由：绑定 `/api/logs` 与 `/api/logs/:id`。
- * @description
- * 挂载：`routes/index.js` → `use('/logs', logsRoutes)`，故此处 `'/'`、`'/:id'`。
- * @see backend/docs/api.md §4
- *
- * 【注释规范】参考答案仅在 `//` 注释；手写区留空。
- * 【启动安全】在完成手写区并挂上 `router.get/post/...` 之前，底部可暂时只 `express.Router()` + `module.exports`，避免挂 undefined。
+ * @file Logs 路由：`/api/logs` 与 `/api/logs/:id`（在聚合路由中挂载于 `/logs`）。
+ * @see backend/docs/api.md（Logs）
  */
 
-// ════════════════════════════════════════════════════════════════════
-// 段落 1 — 参考答案：依赖与 router
-// ════════════════════════════════════════════════════════════════════
-// const express = require('express')
-// const logsController = require('../controllers/logs.controller')
-// const router = express.Router()
+const express = require('express')
+const logsController = require('../controllers/logs.controller')
 
-// ────────────────────────────────────────────────────────────────────
-// 手写区 1：依赖与 router
-// ────────────────────────────────────────────────────────────────────
-const express=require('express')
-const logsController=require('../controllers/logs.controller')
-const router=express.Router()
+const router = express.Router()
 
+router.get('/', logsController.listLogs)
+router.post('/', logsController.createLog)
+router.put('/:id', logsController.updateLog)
+router.delete('/:id', logsController.deleteLog)
 
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 2 — 参考答案：GET /
-// ════════════════════════════════════════════════════════════════════
-// router.get('/', logsController.listLogs)
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 2：GET
-// ────────────────────────────────────────────────────────────────────
-router.get('/',logsController.listLogs)
-
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 3 — 参考答案：POST /
-// ════════════════════════════════════════════════════════════════════
-// router.post('/', logsController.createLog)
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 3：POST
-// ────────────────────────────────────────────────────────────────────
-router.post('/',logsController.createLog)
-
-
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 4 — 参考答案：PUT /:id
-// ════════════════════════════════════════════════════════════════════
-// router.put('/:id', logsController.updateLog)
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 4：PUT
-// ────────────────────────────────────────────────────────────────────
-router.put('/:id',logsController.updateLog)
-
-
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 5 — 参考答案：DELETE /:id
-// ════════════════════════════════════════════════════════════════════
-// router.delete('/:id', logsController.deleteLog)
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 5：DELETE
-// ────────────────────────────────────────────────────────────────────
-
-router.delete('/:id',logsController.deleteLog)
-
-
-// ════════════════════════════════════════════════════════════════════
-// 段落 6 — 参考答案：导出
-// ════════════════════════════════════════════════════════════════════
-// module.exports = router
-
-// ────────────────────────────────────────────────────────────────────
-// 手写区 6：导出
-// ────────────────────────────────────────────────────────────────────
-module.exports=router
-
-
+module.exports = router

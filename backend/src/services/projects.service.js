@@ -2,7 +2,7 @@
  * @file 项目领域服务：入参校验与 repository 编排。
  * @description
  * 抛出的 `HttpError` 由全局错误中间件转换为稳定 JSON。
- * @see backend/docs/api.md §3
+ * @see backend/docs/api.md（Projects）
  */
 
 const projectsRepo = require('../repositories/projects.repo')

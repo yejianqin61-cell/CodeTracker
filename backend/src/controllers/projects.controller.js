@@ -2,7 +2,7 @@
  * @file Projects HTTP 控制器：解析请求、调用 service、写出 JSON。
  * @description
  * 不写 SQL；异常统一 `next(err)`，由 `middlewares/error.middleware.js` 处理。
- * @see backend/docs/api.md §3
+ * @see backend/docs/api.md（Projects）
  */
 
 const projectsService = require('../services/projects.service')

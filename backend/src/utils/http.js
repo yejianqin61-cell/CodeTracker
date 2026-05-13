@@ -2,7 +2,7 @@
  * @file 与 HTTP 语义相关的轻量工具（无 Express 依赖）。
  * @description
  * `HttpError` 携带 `statusCode` 与 `code`，供 `middlewares/error.middleware.js` 映射为
- * `docs/api.md` §6 中的统一 JSON 错误体。
+ * `docs/api.md` 中的统一 JSON 错误体。
  */
 
 class HttpError extends Error {

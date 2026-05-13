@@ -1,6 +1,6 @@
 /**
  * @file Express 统一错误处理中间件（四参数），须挂在所有路由之后。
- * @see backend/docs/api.md §6
+ * @see backend/docs/api.md（错误响应约定）
  */
 
 function normalizeError(err) {
