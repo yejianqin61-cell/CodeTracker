@@ -1,9 +1,16 @@
 ## dependencies
 node_modules/
 
-## build outputs
+## build outputs（Electron / Vite / 打包中间产物）
 dist/
 dist-electron/
+out/
+release/
+pack-resources/
+
+## 本地 SQLite（开发时 backend 默认 database.db；勿把个人数据提交进仓库）
+backend/database.db
+backend/*.db
 
 ## logs
 npm-debug.log*
@@ -29,7 +36,7 @@ coverage/
 .eslintcache
 .stylelintcache
 
-## env
+## env（含密钥的勿提交；需要团队共享的非敏感模板用 .env.example）
 .env
 .env.*
 !.env.example
@@ -38,6 +45,12 @@ coverage/
 .DS_Store
 Thumbs.db
 Desktop.ini
+*.stackdump
+
+## 工具 / 临时
+*.tgz
+.turbo/
+**/.vite/
 
 ## editor
 .vscode/

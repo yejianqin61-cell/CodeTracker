@@ -13,8 +13,13 @@ let server
 async function startServer() {
   await db.initDb(dbPath)
 
-  server = app.listen(port, () => {
-    console.log(`[server] listening on :${port}  dbPath=${dbPath}`)
+  // 与 Electron 主进程健康检查 URL（127.0.0.1）一致；仅本机回环，避免仅绑定 IPv6 时连不上
+  server = app.listen(port, '127.0.0.1', () => {
+    console.log(`[server] listening on 127.0.0.1:${port}  dbPath=${dbPath}`)
+  })
+  server.on('error', (err) => {
+    console.error('[server] listen error', err)
+    process.exit(1)
   })
 }
 
@@ -47,7 +52,13 @@ process.on('SIGTERM', () => {
 
 process.on('unhandledRejection', (reason) => {
   console.error('[process] UnhandledRejection', reason)
+  if (process.env.NODE_ENV === 'production') {
+    process.exit(1)
+  }
 })
 process.on('uncaughtException', (err) => {
   console.error('[process] uncaughtException', err)
+  if (process.env.NODE_ENV === 'production') {
+    process.exit(1)
+  }
 })

@@ -1,0 +1,42 @@
+# 桌面安装包配置（electron-builder）
+# 文档：https://www.electron.build/configuration/configuration
+
+appId: io.github.yejianqin61-cell.codetracker
+productName: CodeTracker
+
+directories:
+  output: release
+  buildResources: build
+
+# 前端 + Electron 主进程
+files:
+  - package.json
+  - dist/**/*
+  - dist-electron/**/*
+
+# 嵌入 Express 后端（由 scripts/stage-backend.cjs 生成）。
+# 注意：electron-builder 会跳过源目录根下的「node_modules」文件夹，故 stage 脚本会改名为 _node_modules，
+# 运行时主进程设置 NODE_PATH。
+extraResources:
+  - from: pack-resources/backend
+    to: backend
+
+asar: true
+
+# 本地打包：跳过对 .exe 的签名与「asar 完整性」补丁。否则会下载 winCodeSign 并在解压时创建
+# 符号链接；在 Windows 上若无「开发者模式」或管理员权限，7-Zip 会报 Cannot create symbolic link 而失败。
+# 正式发布若需代码签名，再改为 true 并配置证书（CSC_LINK 等）。
+win:
+  signAndEditExecutable: false
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false

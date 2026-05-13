@@ -1,5 +1,11 @@
 import { app, BrowserWindow, shell } from 'electron'
 import path from 'node:path'
+import {
+  shouldEmbedBackend,
+  startEmbeddedBackend,
+  stopEmbeddedBackend,
+  showBackendStartError,
+} from './backend'
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -30,12 +36,31 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(() => {
-  createWindow()
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
+app.on('before-quit', () => {
+  stopEmbeddedBackend()
 })
+
+app
+  .whenReady()
+  .then(async () => {
+    if (shouldEmbedBackend()) {
+      try {
+        await startEmbeddedBackend()
+      } catch (e) {
+        showBackendStartError(e)
+        app.quit()
+        return
+      }
+    }
+    createWindow()
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    })
+  })
+  .catch((e) => {
+    showBackendStartError(e)
+    app.quit()
+  })
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()

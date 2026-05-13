@@ -10,7 +10,7 @@
     "rebuild:sqlite": "npm rebuild better-sqlite3"
   },
   "dependencies": {
-    "better-sqlite3": "^11.10.0",
+    "better-sqlite3": "^12.10.0",
     "express": "^4.21.2"
   }
 }
